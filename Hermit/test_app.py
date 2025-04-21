@@ -15,13 +15,22 @@ class HermitTestCases(unittest.TestCase):
         }
     
     def test_rental_search(self):
-        pass
+        response = self.app.get('/api/properties?location=Metairie, LA')
+        self.assertEqual(response.status_code, 200)
+        listings = json.loads(response.data)
+        self.assertIsInstance(listings, list)
+        self.assertGreater(len(listings), 0)
 
     def test_search_with_invalid_location(self):
-        pass
+        response = self.app.get('/api/properties?location=InvalidCityNameXYZ')
+        self.assertEqual(response.status_code, 404)
+        data = json.loads(response.data)
+        self.assertIn("error", data)
 
     def test_valid_property_id(self):
-        pass
+        # Step 1: Get properties
+        listings_resp = self.app.get('/api/properties?location=Metairie, LA')
+        listings = json.loads(listings_resp.data)
 
     def test_invalid_property_id(self):
         invalid_id = "invalid-id-12345"
@@ -35,9 +44,6 @@ class HermitTestCases(unittest.TestCase):
             data is None or isinstance(data, dict) and ("error" in data or data == {}),
             "Expected an error message or empty JSON object"
         )
-        pass
-
-    def test_booking(self):
         pass
 
     def test_create_booking(self):
