@@ -1,10 +1,10 @@
 # Hermit - CPSC 362 Final Project
 
-Hermit is a web-based property management platform designed to simplify the experience of managing, searching, and booking rental properties.
+Hermit is a web-based property management platform designed to simplify the experience of searching and booking rental properties.
 
-Hermit provides services to property owners and future home owners by incorporating the process of discovering and managing properties in a collectively, intuitive interface.
+Hermit provides services to potential tenants by incorporating the process of discovering and exploring properties in a collectively, intuitive interface.
 
-Hermit's design is ideal for potential home owners and serves as a powerful tool for the purpose of finding a home to buy, rent, or book.
+Hermit's design is ideal for potential tenants and serves as a powerful tool for the purpose of finding a property that fits their needs.
 
 
 ## Features
