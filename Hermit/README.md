@@ -12,6 +12,10 @@ Hermit's design is ideal for potential home owners and serves as a powerful tool
 
 - Visualized Listings: View detailed photos of the property, accurately representing the listing.
 
+- Property Listing Management (for hosts)
+
+- Booking Management System
+
 - Responsive & User Friendly Design: Web design is simple, effective, and easy to navigate, accounting for new users.
 
 - Secure Payment & Privacy: Utilizes a secure and safe methods of payment and account management. Built to focus on data security and user privacy.
