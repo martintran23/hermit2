@@ -107,3 +107,6 @@ def get_user_bookings(email):
     user_bookings = [b for b in bookings if b['user_email'] == email]
     return jsonify(user_bookings), 200
 
+# === Main ===
+if __name__ == '__main__':
+    app.run(debug=True)
