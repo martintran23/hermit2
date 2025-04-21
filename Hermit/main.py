@@ -6,72 +6,60 @@ import uuid
 app = Flask(__name__)
 
 # ----------------------------------------
-# 1) Lodgify code
-#url = "https://api.lodgify.com/v2/properties"
-#api_key = '4PE72MIUggANayatgtL7crI9SyEMllqE25DERi/2+Ue/GnmRXyMjqnsyc61u/frt'
-#headers = {
-#    "Accept": "application/json",   
-#    "X-ApiKey": api_key             
-#}
-# ----------------------------------------
-
-# 2) CONFIGURATION
-RENT_URL = "https://us-real-estate-listings.p.rapidapi.com/for-rent"
+# CONFIGURATION
+RENT_URL   = "https://us-real-estate-listings.p.rapidapi.com/for-rent"
 DETAIL_URL = "https://us-real-estate-listings.p.rapidapi.com/v2/property"
-rent_params = {
-    "location": "Metairie, LA",  # change to desired city/ZIP
-    "limit": 5,
-    "offset": 0
-}
-
-# 3) Headers (Maro’s key)
-headers = {
+HEADERS = {
     "X-RapidAPI-Key":  "bfb6821e53msh848033d27b1e2d1p186d09jsnb3bc129f7ecb",
     "X-RapidAPI-Host": "us-real-estate-listings.p.rapidapi.com"
 }
-# Booking store
+
+# In-memory booking store
 bookings = []
 
-# 4) Fetch and print the rental listings
-resp = requests.get(RENT_URL, headers=headers, params=rent_params)
-resp.raise_for_status()
-rent_listings = resp.json().get("listings", [])
+# === PROPERTIES ENDPOINTS ===
+@app.route('/api/properties', methods=['GET'])
+def list_properties():
+    """Return a list of rental properties based on query params."""
+    location = request.args.get('location')
+    if not location:
+        # Invalid location param
+        return jsonify({"error": "Location parameter is required."}), 400
 
-print("=== Rental Listings (/for-rent) ===")
-for lst in rent_listings:
-    pid  = lst["property_id"]
-    href = lst["href"]
-    addr = lst["location"]["address"]
-    print(f"ID:      {pid}")
-    print(f"URL:     {href}")
-    print(f"Address: {addr['line']}, {addr['city']}, {addr['state_code']} {addr['postal_code']}")
-    print("-" * 40)
+    # valid search: use provided params
+    limit = int(request.args.get('limit', 5))
+    offset = int(request.args.get('offset', 0))
+    params = {"location": location, "limit": limit, "offset": offset}
 
-if not rent_listings:
-    print("No rentals found; check your location/params.")
-    exit(0)
+    resp = requests.get(RENT_URL, headers=HEADERS, params=params)
+    if resp.status_code != 200:
+        # upstream API error
+        return jsonify({"error": "Error fetching properties."}), resp.status_code
 
-# ----------------------------------------
-# 5) Group’s original v2/property call, now with a real property_id
-DETAIL_URL = "https://us-real-estate-listings.p.rapidapi.com/v2/property"
-first_id    = rent_listings[0]["property_id"]
-detail_params = {"property_id": first_id}
+    listings = resp.json().get('listings', [])
+    if not listings:
+        # no results for provided location
+        return jsonify({"error": "No properties found for location."}), 404
 
-detail_resp = requests.get(DETAIL_URL, headers=headers, params=detail_params)
-print("\n=== Detail View (/v2/property) ===")
-print("Status:", detail_resp.status_code)
-print("Response headers:", detail_resp.headers)
+    return jsonify(listings), 200
 
-if detail_resp.ok:
-    detail = detail_resp.json().get("listing") or detail_resp.json().get("data") or {}
-    print("Detail for property ID:", first_id)
-    print("URL:    ", detail.get("href") or detail.get("permalink"))
-    addr = detail.get("location", {}).get("address", {})
-    print("Address:", f"{addr.get('line')}, {addr.get('city')}, {addr.get('state_code')} {addr.get('postal_code')}")
-else:
-    print("Error fetching detail:", detail_resp.status_code, detail_resp.text)
+@app.route('/api/properties/<property_id>', methods=['GET'])
+def get_property_detail(property_id):
+    """Return detailed info for a single property or 404 if not found."""
+    params = {"property_id": property_id}
+    resp = requests.get(DETAIL_URL, headers=HEADERS, params=params)
+    if resp.status_code != 200:
+        # invalid property id or upstream error
+        return jsonify({"error": "Property not found."}), 404
 
-# === BOOKING ENDPOINT ===
+    payload = resp.json()
+    detail = payload.get('listing') or payload.get('data') or {}
+    if not detail:
+        return jsonify({"error": "Property not found."}), 404
+
+    return jsonify(detail), 200
+
+# === BOOKING ENDPOINTS ===
 @app.route('/api/bookings', methods=['GET'])
 def list_bookings():
     return jsonify(bookings), 200
@@ -107,6 +95,6 @@ def get_user_bookings(email):
     user_bookings = [b for b in bookings if b['user_email'] == email]
     return jsonify(user_bookings), 200
 
-# === Main ===
+# === MAIN ===
 if __name__ == '__main__':
     app.run(debug=True)
