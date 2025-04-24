@@ -18,3 +18,23 @@ Hermit's design is ideal for potential tenants and serves as a powerful tool for
 
 
 ## Setup
+To get the Hermit app up and running on your local machine:
+
+### 1. Clone the Github repository
+- git clone https://github.com/martintran23/hermit.git
+
+### 2. Install Git Bash
+- Download here: https://git-scm.com/downloads
+
+### 3. Open project folder in terminal or in Git Bash
+- If using terminal: cd hermit
+- If using Git Bash: Manually open project folder with Git Bash
+
+### 4. Install dependencies
+- pip install flask
+
+### 5. Run Flask server
+- python server/app.py
+
+### 6. Open web browser and run
+- http://localhost:5000/
