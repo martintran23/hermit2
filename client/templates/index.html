@@ -23,8 +23,8 @@
       <h2>Find the Right Place for you on <br><strong>Hermit</strong></h2>
       <p>Discover entire homes and rooms perfect for any trip.</p>
 
-      <form>
-        <input type="text" id="location-search" placeholder="LOCATION">
+      <form id="search-form">
+        <input type="text" id="location-search" placeholder="LOCATION" required>
         <div class="date-inputs">
           <input type="text" placeholder="Check In">
           <input type="text" placeholder="Check Out">
@@ -45,6 +45,9 @@
     </div>
   </div>
 
+  <!-- Results Section (New) -->
+  <div id="results"></div>
+
   <div class="features">
     <div>
       <h2>Plans Change</h2>
@@ -53,7 +56,7 @@
 
     <div>
       <h2>Cozy and Inviting</h2>
-      <p>From mountain cabins to beachside retreats-- discover your next stay among millions of others.</p>
+      <p>From mountain cabins to beachside retreats -- discover your next stay among millions of others.</p>
     </div>
 
     <div>
@@ -64,4 +67,5 @@
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
