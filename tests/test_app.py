@@ -28,7 +28,6 @@ class HermitTestCases(unittest.TestCase):
         self.assertIn("error", data)
 
     def test_valid_property_id(self):
-        # Step 1: Get properties
         listings_resp = self.app.get('/api/properties?location=Metairie, LA')
         listings = json.loads(listings_resp.data)
 
