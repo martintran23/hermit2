@@ -46,8 +46,8 @@ def list_properties():
     try:
         response = requests.get(RENT_URL, headers=HEADERS, params=params)
         response.raise_for_status()
-        data = response.json()
-        print(data.keys())
+        data = response.json()  # check to
+        print(data.keys())      # see what keys are returned from data
         listings = response.json().get('listings', [])
 
         if listings:

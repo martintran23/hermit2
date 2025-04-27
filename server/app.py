@@ -1,5 +1,6 @@
 from flask import Flask
 from routes.home import home_bp
+from routes.properties import properties_bp
 
 app = Flask(
     __name__,
@@ -8,6 +9,7 @@ app = Flask(
 )
 
 app.register_blueprint(home_bp)
+app.register_blueprint(properties_bp)
 
 if __name__ == '__main__':
     app.run(debug=True)
