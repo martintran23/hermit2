@@ -1,45 +1,46 @@
-document.getElementById('search-form').addEventListener('submit', async (e) => {
-  e.preventDefault(); // Stop form from reloading page
+const apiKey = 'bfb6821e53msh848033d27b1e2d1p186d09jsnb3bc129f7ecb';
+let currentPage = 1;
+let totalPages = 1;
+let currentSearchQuery = "";
+let currentHomes = [];
 
-  const location = document.getElementById('location-search').value;
-  const checkInDate = document.getElementById('check-in').value;
-  const checkOutDate = document.getElementById('check-out').value;
-
-  if (checkInDate && checkOutDate && new Date(checkOutDate) <= new Date(checkInDate)) {
-    alert("Check-out date must be after check-in date!");
-    return; // Stop if invalid
-  }
-
-  try {
-    const response = await fetch(`/api/properties?location=${encodeURIComponent(location)}`);
-    const listings = await response.json();
-
-    if (response.ok && listings.length > 0) {
-      displayResults(listings);
-    } else {
-      document.getElementById('results').innerHTML = `<p>No rentals found for "${location}".</p>`;
+const homeSearch = document.getElementById("home-search");
+homeSearch.addEventListener('keyup', (event) => {
+    const { key } = event;
+    if (key !== "Enter" && key !== "Backspace" && key !== "Shift" && key !== "Control") {
+        currentPage = 1;
+        currentSearchQuery += key;
+        debounceSearch(currentSearchQuery, currentPage);
     }
-  } catch (error) {
-    console.error("Error fetching properties:", error);
-    document.getElementById('results').innerHTML = `<p>Error fetching results.</p>`;
-  }
 });
 
-function displayResults(listings) {
-  const resultsContainer = document.getElementById('results');
-  resultsContainer.innerHTML = ""; // Clear old results
+// Correct URL
+const baseUrl = 'https://us-real-estate-listings.p.rapidapi.com/for-rent';
 
-  listings.forEach(listing => {
-    const address = listing.location?.address || {};
-    const image = listing.primary_photo?.href || "https://via.placeholder.com/300x200";
+async function fetchRentals(query = "", page = 1) {
+    const url = `${baseUrl}?location=${query}&page=${page}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': apiKey,
+            'X-RapidAPI-Host': 'us-real-estate-listings.p.rapidapi.com'
+        }
+    };
 
-    const card = document.createElement('div');
-    card.className = "listing-card";
-    card.innerHTML = `
-      <img src="${image}" alt="Property Image" width="300">
-      <h3>${address.line}, ${address.city}, ${address.state_code}</h3>
-      <p>Price: ${listing.list_price ? `$${listing.list_price}` : "Not listed"}</p>
-    `;
-    resultsContainer.appendChild(card);
-  });
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        console.log(result);
+    } catch (error) {
+        console.error("Error fetching rentals:", error);
+    }
+}
+
+
+let debounceTimer;
+function debounceSearch(query, page) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        fetchRentals(query, page);
+    }, 500); 
 }
