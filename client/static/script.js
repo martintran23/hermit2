@@ -14,7 +14,7 @@ homeSearch.addEventListener('keyup', (event) => {
     }
 });
 
-// Correct URL
+
 const baseUrl = 'https://us-real-estate-listings.p.rapidapi.com/for-rent';
 
 async function fetchRentals(query = "", page = 1) {
