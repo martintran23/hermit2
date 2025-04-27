@@ -2,6 +2,13 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
   e.preventDefault(); // Stop form from reloading page
 
   const location = document.getElementById('location-search').value;
+  const checkInDate = document.getElementById('check-in').value;
+  const checkOutDate = document.getElementById('check-out').value;
+
+  if (checkInDate && checkOutDate && new Date(checkOutDate) <= new Date(checkInDate)) {
+    alert("Check-out date must be after check-in date!");
+    return; // Stop if invalid
+  }
 
   try {
     const response = await fetch(`/api/properties?location=${encodeURIComponent(location)}`);
