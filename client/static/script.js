@@ -1,56 +1,37 @@
-const apiKey = 'bfb6821e53msh848033d27b1e2d1p186d09jsnb3bc129f7ecb';
-const searchInput = document.getElementById("location-search");
-
-searchInput.addEventListener('keyup', (event) => {
-    const key = event.key;
-    if (key === "Enter") {
-        const location = searchInput.value;
-        if (location) {
-            searchProperties(location);
-        }
-    }
-});
-
-async function searchProperties(location) {
-    const url = `https://us-real-estate-listings.p.rapidapi.com/for-rent?location=${encodeURIComponent(location)}&limit=5&offset=0`;
-    
-    const options = {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': apiKey,
-            'X-RapidAPI-Host': 'us-real-estate-listings.p.rapidapi.com'
-        }
-    };
-
+document.getElementById('search-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const location = document.getElementById('location-search').value;
+  
     try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        console.log("Search Results:", data);
-
-        if (data.listings && data.listings.length > 0) {
-            displayResults(data.listings);
-        } else {
-            alert("No rentals found for this location.");
-        }
-
+      const response = await fetch(`/api/properties?location=${encodeURIComponent(location)}`);
+      const data = await response.json();
+      console.log("Search Results:", data);
+  
+      if (response.ok && data.length > 0) {
+        displayResults(data);
+      } else {
+        document.getElementById('results').innerHTML = `<p>No rentals found for "${location}".</p>`;
+      }
     } catch (error) {
-        console.error("Error fetching properties:", error);
+      console.error("Search error:", error);
+      document.getElementById('results').innerHTML = `<p>Error fetching results.</p>`;
     }
-}
-
-function displayResults(listings) {
-    const resultsContainer = document.getElementById("results");
+  });
+  
+  function displayResults(listings) {
+    const resultsContainer = document.getElementById('results');
     resultsContainer.innerHTML = "";
-
+  
     listings.forEach(listing => {
-        const address = listing.location?.address || {};
-        const card = document.createElement("div");
-        card.className = "listing-card";
-        card.innerHTML = `
-            <h3>${address.line}, ${address.city}, ${address.state_code} ${address.postal_code}</h3>
-            <p>Price: ${listing.list_price ? `$${listing.list_price}` : "Not listed"}</p>
-            <a href="${listing.href}" target="_blank">View Details</a>
-        `;
-        resultsContainer.appendChild(card);
+      const address = listing.location?.address || {};
+      const image = listing.primary_photo?.href || "https://via.placeholder.com/300x200";
+  
+      const card = document.createElement('div');
+      card.className = "listing-card";
+      card.innerHTML = `
+        <img src="${image}" alt="Property Image" width="300">
+        <h3>${address.line}, ${address.city}, ${address.state_code}</h3>
+      `;
+      resultsContainer.appendChild(card);
     });
-}
+  }
