@@ -3,32 +3,40 @@
 
 <head>
   <meta charset="UTF-8">
+<<<<<<< Updated upstream
   <title>Find your style on airbnb</title>
+=======
+  <title>Find your style on Hermit</title>
+  <!-- point at your static folder -->
+>>>>>>> Stashed changes
   <link rel="stylesheet" href="../static/style.css">
 </head>
 
 <body>
   <div class="navigation-container">
     <div class="brand">
+<<<<<<< Updated upstream
       <img src="{{ url_for('static', filename='image_1.jpg') }}" alt="Hermit logo" class="logo">
+=======
+>>>>>>> Stashed changes
       <h1>Hermit</h1>
     </div>
     <nav class="navigation">
-      <a href="home.html" class="nav-link">Sign Up!</a>
-      <a href="home.html" class="nav-link">Book your Place!</a>
+      <a href="/signup" class="nav-link">Sign Up!</a>
+      <a href="/book" class="nav-link">Book your Place!</a>
     </nav>
   </div>
 
   <div class="hero-section">
     <div class="search-card">
-      <h2>Find the Right Place for you on <br><strong>Airbnb</strong></h2>
+      <h2>Find the Right Place for you on <br><strong>Hermit</strong></h2>
       <p>Discover entire homes and rooms perfect for any trip.</p>
 
-      <form>
-        <input type="text" id = "home-search" placeholder="LOCATION" value="">
+      <form id="search-form">
+        <input type="text" id="location-search" placeholder="LOCATION" required>
         <div class="date-inputs">
-          <input type="text" placeholder="Check In">
-          <input type="text" placeholder="Check Out">
+          <input type="date" id="check-in" placeholder="Check In">
+          <input type="date" id="check-out" placeholder="Check Out">
         </div>
         <div class="guest-inputs">
           <select>
@@ -44,25 +52,35 @@
         <button type="submit">Search</button>
       </form>
     </div>
+  </div>
+
+  <!-- Results Section -->
+  <div id="results"></div>
+
+  <div class="features">
+    <div>
+      <h2>Plans Change</h2>
+      <p>Stay stress-free with flexible cancellation options.</p>
     </div>
 
-    <div class="features">
-      <div>
-        <h2>Plans Change</h2>
-        <p>Stay stress-free with flexible cancellation options.</p>
-      </div>
-
-      <div>
-        <h2>Cozy and Inviting</h2>
-        <p>From mountain cabins to beachside retreats-- discover your next stay among millions of others.</p>
-      </div>
-
-      <div>
-        <h2>Inviting and Travel-Focused</h2>
-        <p>From cozy studios to spacious homes -- use 100+ filters to find your ideal gateway.</p>
-      </div>
+    <div>
+      <h2>Cozy and Inviting</h2>
+      <p>From mountain cabins to beachside retreats -- discover your next stay among millions of others.</p>
     </div>
+<<<<<<< Updated upstream
     
     <script src="../static/script.js"></script>
+=======
+
+    <div>
+      <h2>Inviting and Travel-Focused</h2>
+      <p>From cozy studios to spacious homes -- use 100+ filters to find your ideal getaway.</p>
+    </div>
+  </div>
+
+  <!-- point at your static folder -->
+  <script src="../static/script.js"></script>
+>>>>>>> Stashed changes
 </body>
+
 </html>

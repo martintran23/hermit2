@@ -1,11 +1,14 @@
+/* ———————————————————————— */
+/* Reset & Base Styles     */
+/* ———————————————————————— */
 body,
 html {
   margin: 0;
   padding: 0;
   width: 100%;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
-
 
 h1 {
   color: #ef3535;
@@ -14,12 +17,14 @@ h1 {
 }
 
 h2 {
-  color: #000000;
+  color: #000;
   margin: 0;
   padding: 25px 0;
 }
 
-
+/* ———————————————————————— */
+/* Navigation & Hero        */
+/* ———————————————————————— */
 .nav-link {
   margin: 0;
   font-size: 16px;
@@ -27,7 +32,6 @@ h2 {
   color: #000;
   transition: color 0.3s ease;
 }
-
 .nav-link:hover {
   color: #ff5b5b;
 }
@@ -41,6 +45,7 @@ h2 {
   border-bottom: 1px solid #eee;
 }
 
+<<<<<<< Updated upstream
 .brand {
   display: flex;
   align-items: center;
@@ -52,20 +57,30 @@ h2 {
 }
 
 
+=======
+>>>>>>> Stashed changes
 .hero-section {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   height: 100vh;
   padding-left: 60px;
+<<<<<<< Updated upstream
   font-family: Arial, sans-serif;
 
   background-image: url('/static/image_2.jpg');
+=======
+  /* comment out until you add the actual image file */
+  /* background-image: url('image-2.jpg'); */
+>>>>>>> Stashed changes
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
+/* ———————————————————————— */
+/* Search Card              */
+/* ———————————————————————— */
 .search-card {
   width: 30%;
   padding: 30px;
@@ -73,17 +88,14 @@ h2 {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin: auto 0 auto 20px;
 }
-
 .search-card h1 {
   font-size: 28px;
   margin-bottom: 10px;
 }
-
 .search-card p {
-  color: #000000;
+  color: #000;
   margin-bottom: 20px;
 }
-
 form input,
 form select {
   width: 100%;
@@ -93,13 +105,11 @@ form select {
   border-radius: 12px;
   font-size: 14px;
 }
-
 .date-inputs,
 .guest-inputs {
   display: flex;
   gap: 10px;
 }
-
 form button {
   width: 100%;
   padding: 14px;
@@ -112,6 +122,9 @@ form button {
   cursor: pointer;
 }
 
+/* ———————————————————————— */
+/* Features Section         */
+/* ———————————————————————— */
 .features {
   display: flex;
   justify-content: space-between;
@@ -119,7 +132,6 @@ form button {
   padding: 60px;
   background-color: #f8f8f8;
 }
-
 .features div {
   flex: 1;
   padding: 20px;
@@ -127,4 +139,56 @@ form button {
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   text-align: center;
+}
+
+/* ———————————————————————— */
+/* Listings (Search Results) */
+/* ———————————————————————— */
+#results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.listing-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.listing-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.listing-card h3 {
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.listing-card p {
+  margin: 0 0 12px;
+}
+
+.book-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(to right, #ff385c, #e61e4d);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.book-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }

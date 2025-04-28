@@ -1,0 +1,41 @@
+from flask import Blueprint, request, jsonify
+import uuid
+from datetime import datetime
+
+bookings_bp = Blueprint('bookings', __name__)
+
+# In-memory store for demo purposes
+bookings = []
+
+@bookings_bp.route('/api/bookings', methods=['GET'])
+def list_bookings():
+    return jsonify(bookings), 200
+
+@bookings_bp.route('/api/bookings', methods=['POST'])
+def create_booking():
+    data = request.get_json() or {}
+    required = ['property_id', 'user_email', 'start_date', 'end_date']
+    if not all(field in data for field in required):
+        return jsonify({"error": "Missing booking fields"}), 400
+
+    booking = {
+        "booking_id": str(uuid.uuid4()),
+        "property_id": data['property_id'],
+        "user_email": data['user_email'],
+        "start_date": data['start_date'],
+        "end_date": data['end_date'],
+        "timestamp": datetime.utcnow().isoformat()
+    }
+    bookings.append(booking)
+    return jsonify({"booking": booking}), 201
+
+@bookings_bp.route('/api/bookings/<booking_id>', methods=['DELETE'])
+def cancel_booking(booking_id):
+    global bookings
+    bookings = [b for b in bookings if b['booking_id'] != booking_id]
+    return jsonify({"message": f"Booking {booking_id} canceled"}), 200
+
+@bookings_bp.route('/api/bookings/user/<email>', methods=['GET'])
+def get_user_bookings(email):
+    user_bookings = [b for b in bookings if b['user_email'] == email]
+    return jsonify(user_bookings), 200
