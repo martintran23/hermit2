@@ -1,21 +1,17 @@
-# app.py
+from flask import Blueprint, render_template
 
-from flask import Flask
-from server.routes.home         import home_bp
-from server.routes.properties   import properties_bp
-from server.routes.api.bookings import bookings_bp
-from server.routes.payments     import payments_bp   # new
-
-app = Flask(
+payments_bp = Blueprint(
+    'payments',
     __name__,
-    template_folder='../client/templates',
-    static_folder='../client/static'
+    template_folder='../../client/templates'
 )
 
-app.register_blueprint(home_bp)
-app.register_blueprint(properties_bp)
-app.register_blueprint(bookings_bp)
-app.register_blueprint(payments_bp)                # register it
+@payments_bp.route('/payments/<booking_id>')
+def payment_page(booking_id):
+    # step 1: show a fake payment form
+    return render_template('payment.html', booking_id=booking_id)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@payments_bp.route('/payments/<booking_id>/confirm')
+def payment_confirm(booking_id):
+    # step 2: show the “booking confirmed” page
+    return render_template('payment_confirm.html', booking_id=booking_id)
