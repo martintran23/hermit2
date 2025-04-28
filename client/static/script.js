@@ -1,10 +1,10 @@
 // client/static/script.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    const searchForm = document.getElementById('search-form');
-    const locationInput = document.getElementById('location-search');
-    const checkInInput = document.getElementById('check-in');
-    const checkOutInput = document.getElementById('check-out');
+    const searchForm       = document.getElementById('search-form');
+    const locationInput    = document.getElementById('location-search');
+    const checkInInput     = document.getElementById('check-in');
+    const checkOutInput    = document.getElementById('check-out');
     const resultsContainer = document.getElementById('results');
   
     // Search form submission
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       resultsContainer.innerHTML = '';
       listings.forEach(listing => {
         const address = listing.location?.address || {};
-        const image = listing.primary_photo?.href || 'https://via.placeholder.com/300x200';
+        const image   = listing.primary_photo?.href || 'https://via.placeholder.com/300x200';
   
         const card = document.createElement('div');
         card.className = 'listing-card';
@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.book-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
           const propertyId = btn.getAttribute('data-id');
-          const startDate = checkInInput.value;
-          const endDate = checkOutInput.value;
+          const startDate  = checkInInput.value;
+          const endDate    = checkOutInput.value;
           if (!startDate || !endDate) {
             alert('Please select check-in and check-out dates before booking.');
             return;
@@ -69,11 +69,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const resp = await fetch('/api/bookings', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ property_id: propertyId, user_email: userEmail, start_date: startDate, end_date: endDate })
+              body: JSON.stringify({
+                property_id: propertyId,
+                user_email:  userEmail,
+                start_date:  startDate,
+                end_date:    endDate
+              })
             });
             const data = await resp.json();
             if (resp.ok) {
-              alert('Booking confirmed! ID: ' + data.booking.booking_id);
+              // Redirect to payment page for this booking
+              window.location.href = `/payments/${data.booking.booking_id}`;
             } else {
               alert('Booking failed: ' + (data.error || resp.status));
             }
