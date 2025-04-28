@@ -1,10 +1,14 @@
 import unittest
-from main import app, bookings
+#from main import app, bookings
+from server.oldapp import app
+from server.app import app
+from unittest.mock import patch
 import json
 
 class HermitTestCases(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
+        self.client = app.test_client()
         self.app.testing = True
 
         self.booking_data = {
@@ -14,6 +18,10 @@ class HermitTestCases(unittest.TestCase):
             "end_date": "2025-05-05"
         }
     
+    def test_homepage(self):
+        rv = self.client.get('/')
+        self.assertEqual(rv.status_code, 200)
+
     def test_rental_search(self):
         response = self.app.get('/api/properties?location=Metairie, LA')
         self.assertEqual(response.status_code, 200)
@@ -76,6 +84,17 @@ class HermitTestCases(unittest.TestCase):
 
         cancel_resp = self.app.delete(f'/api/bookings/{booking_id}')
         self.assertEqual(cancel_resp.status_code, 200)
+    
+    @patch('server.routes.properties.rentals_collection.find')
+    def test_list_properties_success(self, mock_find):
+        mock_find.return_value = []
+        response = self.client.get('/api/properties?location=NewYork')
+        self.assertEqual(response.status_code, 200)
 
+    def test_list_properties_missing_location(self):
+        response = self.client.get('/api/properties')
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b'Location parameter is required', response.data)
+        
 if __name__ == '__main__':
     unittest.main()
