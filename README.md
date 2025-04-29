@@ -23,7 +23,7 @@ To get the Hermit app up and running on your local machine:
 ### 1. Clone the Github repository
 - git clone https://github.com/martintran23/hermit2.git
 
-### 2. Install Git Bash
+### 2. Install Git Bash (optional)
 - Download here: https://git-scm.com/downloads
 
 ### 3. Open project folder in terminal or in Git Bash
@@ -34,9 +34,13 @@ To get the Hermit app up and running on your local machine:
 - pip install flask
 - pip install -r requirements.txt
 
+### 5. Install MongoDB
+- https://www.mongodb.com/try/download/community
+- Connect to localhost:27017
+
 ### 5. Run Flask server
 - python server/app.py
 
-### 6. Open web browser and run
-- http://localhost:5000/
-- or https://8q42kvkd-5000.usw3.devtunnels.ms/
+### 6. Run Website
+- Web Browser: http://localhost:5000/
+- Or open forwarded port link (ex.https://8q42kvkd-5000.usw3.devtunnels.ms/)
