@@ -27,7 +27,7 @@ To get the Hermit app up and running on your local machine:
 - Download here: https://git-scm.com/downloads
 
 ### 3. Open project folder in terminal or in Git Bash
-- If using terminal: cd hermit
+- If using terminal: cd hermit2
 - If using Git Bash: Manually open project folder with Git Bash
 
 ### 4. Install dependencies
