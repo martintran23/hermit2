@@ -45,6 +45,11 @@ h2 {
   border-bottom: 1px solid #eee;
 }
 
+.navigation {
+  display: flex;
+  gap: 1.5rem;
+}
+
 .brand {
   display: flex;
   align-items: center;
