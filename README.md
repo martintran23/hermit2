@@ -39,7 +39,7 @@ To get the Hermit app up and running on your local machine:
 - Connect to localhost:27017
 
 ### 5. Run Flask server
-- python server/app.py
+- python -m server.app
 
 ### 6. Run Website
 - Web Browser: http://localhost:5000/
