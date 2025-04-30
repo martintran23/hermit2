@@ -45,7 +45,6 @@ h2 {
   border-bottom: 1px solid #eee;
 }
 
-<<<<<<< Updated upstream
 .brand {
   display: flex;
   align-items: center;
@@ -57,22 +56,17 @@ h2 {
 }
 
 
-=======
->>>>>>> Stashed changes
 .hero-section {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   height: 100vh;
   padding-left: 60px;
-<<<<<<< Updated upstream
   font-family: Arial, sans-serif;
 
   background-image: url('/static/image_2.jpg');
-=======
   /* comment out until you add the actual image file */
   /* background-image: url('image-2.jpg'); */
->>>>>>> Stashed changes
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
