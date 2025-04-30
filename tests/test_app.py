@@ -1,6 +1,5 @@
 import unittest
 #from main import app, bookings
-from server.oldapp import app
 from server.app import app
 from unittest.mock import patch
 import json
