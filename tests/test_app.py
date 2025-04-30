@@ -13,8 +13,8 @@ class HermitTestCases(unittest.TestCase):
         self.app.testing = True
 
         self.user_data = {
-        "email": "test@example.com",
-        "password": "testpass"
+            "email": "test@example.com",
+            "password": "testpass"
         }
         self.app.post('/api/signup', data=json.dumps(self.user_data), content_type='application/json')
         self.app.post('/api/login', data=json.dumps(self.user_data), content_type='application/json')
