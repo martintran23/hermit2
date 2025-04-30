@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Create an Account</h1>
+  <form id="signup-form">
+    <input type="email" id="signup-email" placeholder="Email" required />
+    <input type="password" id="signup-password" placeholder="Password" required />
+    <button type="submit">Sign Up</button>
+  </form>
+  <p id="signup-message"></p>
+
+  <script src="{{ url_for('static', filename='signup.js') }}"></script>
+</body>
+</html>

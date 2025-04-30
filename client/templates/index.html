@@ -15,15 +15,17 @@
 <body>
   <div class="navigation-container">
     <div class="brand">
-<<<<<<< Updated upstream
-      <img src="{{ url_for('static', filename='image_1.jpg') }}" alt="Hermit logo" class="logo">
-=======
->>>>>>> Stashed changes
       <h1>Hermit</h1>
     </div>
     <nav class="navigation">
-      <a href="/signup" class="nav-link">Sign Up!</a>
-      <a href="/book" class="nav-link">Book your Place!</a>
+      {% if user_email %}
+        <span class="nav-link">👋 {{ user_email }}</span>
+        <a href="/logout" class="nav-link">Log Out</a>
+      {% else %}
+        <a href="/signup" class="nav-link">Sign Up</a>
+        <a href="/login" class="nav-link">Login</a>
+      {% endif %}
+      <a href="/book" class="nav-link">Book your Place</a>
     </nav>
   </div>
 
