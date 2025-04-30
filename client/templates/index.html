@@ -16,7 +16,7 @@
     </div>
     <nav class="navigation">
       {% if user_email %}
-        <span class="nav-link">👋 {{ user_email }}</span>
+        <span class="nav-link">Welcome {{ user_email }}</span>
         <a href="/logout" class="nav-link">Log Out</a>
       {% else %}
         <a href="/signup" class="nav-link">Sign Up</a>
