@@ -77,6 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
               })
             });
             const data = await resp.json();
+
+            if (resp.status === 401) {
+              alert("You must be logged in to book. Redirecting to login page...");
+              window.location.href = "/login";
+              return;
+            }
+            
             if (resp.ok) {
               // Redirect to payment page for this booking
               window.location.href = `/payments/${data.booking.booking_id}`;
