@@ -3,6 +3,7 @@ import unittest
 from server.app import app
 from unittest.mock import patch
 import json
+import uuid
 
 class HermitTestCases(unittest.TestCase):
     def setUp(self):
@@ -10,6 +11,14 @@ class HermitTestCases(unittest.TestCase):
         self.app = app.test_client()
         self.client = app.test_client()
         self.app.testing = True
+
+        self.user_data = {
+        "email": "test@example.com",
+        "password": "testpass"
+        }
+        self.app.post('/api/signup', data=json.dumps(self.user_data), content_type='application/json')
+        self.app.post('/api/login', data=json.dumps(self.user_data), content_type='application/json')
+
 
         # Sample booking data used in multiple tests
         self.booking_data = {
@@ -101,6 +110,79 @@ class HermitTestCases(unittest.TestCase):
         response = self.client.get('/api/properties')
         self.assertEqual(response.status_code, 400)
         self.assertIn(b'Location parameter is required', response.data)
+    
+    def test_signup_success(self):
+        unique_email = f"user_{uuid.uuid4().hex[:8]}@example.com"
+        signup_data = {
+            "email": unique_email,
+            "password": "securepassword123"
+        }
+        response = self.app.post('/api/signup',
+                                 data=json.dumps(signup_data),
+                                 content_type='application/json')
+        self.assertIn(response.status_code, [200, 201])
+        data = json.loads(response.data)
+        self.assertIn("message", data)
+
+    def test_signup_missing_password(self):
+        # Signup data with missing password
+        signup_data = {
+            "email": "user@example.com"
+        }
+
+        response = self.app.post(
+            '/api/signup',
+            data=json.dumps(signup_data),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 400)
+        data = response.get_json()
+        self.assertIn("error", data)
+
+    def test_login_success(self):
+        # Step 1: Create a new user for login
+        signup_data = {
+            "email": "loginuser@example.com",
+            "password": "testpass"
+        }
+        self.app.post(
+            '/api/signup',
+            data=json.dumps(signup_data),
+            content_type='application/json'
+        )
+
+        # Step 2: Attempt login with correct credentials
+        login_data = {
+            "email": "loginuser@example.com",
+            "password": "testpass"
+        }
+        response = self.app.post(
+            '/api/login',
+            data=json.dumps(login_data),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertIn("message", data)
+
+    def test_login_invalid_credentials(self):
+        # Attempt login with incorrect or nonexistent credentials
+        login_data = {
+            "email": "nonexistent@example.com",
+            "password": "wrongpass"
+        }
+
+        response = self.app.post(
+            '/api/login',
+            data=json.dumps(login_data),
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, 401)
+        data = response.get_json()
+        self.assertIn("error", data)
         
 if __name__ == '__main__':
     unittest.main()
