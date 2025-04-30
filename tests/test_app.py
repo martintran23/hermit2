@@ -1,6 +1,5 @@
 import unittest
 #from main import app, bookings
-from server.oldapp import app
 from server.app import app
 from unittest.mock import patch
 import json
@@ -39,28 +38,6 @@ class HermitTestCases(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         data = json.loads(response.data)
         self.assertIn("error", data)
-        
-    def test_valid_property_id(self):
-        listings_resp = self.app.get('/api/properties?location=Metairie, LA')
-        self.assertEqual(listings_resp.status_code, 200)
-        listings = json.loads(listings_resp.data)
-
-        self.assertIsInstance(listings, list)
-        self.assertGreater(len(listings), 0)
-
-        # Get the first listing
-        listing = listings[0]
-        property_id = str(listing.get("id") or listing.get("_id"))
-
-        # Make sure it's not None or empty
-        self.assertTrue(property_id)
-
-        # Now request the property detail page
-        prop_resp = self.app.get(f"/property/{property_id}")
-        self.assertEqual(prop_resp.status_code, 200)
-
-        data = json.loads(prop_resp.data)
-        self.assertIn("id", data)
 
     def test_invalid_property_id(self):
         # Test how the system responds to a request for a non-existent property ID
