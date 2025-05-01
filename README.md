@@ -41,6 +41,15 @@ To get the Hermit app up and running on your local machine:
 ### 5. Install MongoDB
 - https://www.mongodb.com/try/download/community
 - Connect to localhost:27017
+1. docker ps -a
+2. docker start hermit-mongo
+3. (skip to step 4 if docker running on correct address):
+docker run -d \
+  --name hermit-mongo \
+  -p 27017:27017 \
+  mongo:6.0
+4. docker exec hermit-mongo mongosh --eval "db.runCommand({ ping: 1 })"
+5. if terminal responds with { "ok" : 1 } then you are succesfully connected to mongodb://localhost:27017
 
 ### 5. Run Flask server
 - python -m server.app
