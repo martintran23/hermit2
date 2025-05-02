@@ -1,41 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <title>Find your style on airbnb</title>
   <title>Find your style on Hermit</title>
-  <!-- point at your static folder -->
-  <link rel="stylesheet" href="../static/style.css">
+
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Main CSS -->
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+  >
+
+  <!-- Expose API & payment routes to JS -->
+  <script>
+    window.appConfig = {
+      bookingApi:  "{{ url_for('bookings.create_booking') }}",              // POST here to create booking
+      paymentBase: "{{ url_for('payments.payment_page', booking_id='') }}", // e.g. "/payments/"
+      userEmail:   "{{ user_email or '' }}"
+    };
+  </script>
 </head>
-
 <body>
-  <div class="navigation-container">
-    <div class="brand">
-      <h1>Hermit</h1>
-    </div>
-    <nav class="navigation">
-      {% if user_email %}
-        <span class="nav-link">Welcome {{ user_email }}</span>
-        <a href="/logout" class="nav-link">Log Out</a>
-      {% else %}
-        <a href="/signup" class="nav-link">Sign Up</a>
-        <a href="/login" class="nav-link">Login</a>
-      {% endif %}
-      <a href="/book" class="nav-link">Book your Place</a>
-    </nav>
-  </div>
 
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <img
+        src="{{ url_for('static', filename='image_1.jpg') }}"
+        alt="Hermit Logo"
+        class="logo"
+      >
+      <span class="site-name">Hermit</span>
+    </div>
+    <ul class="navbar-menu">
+      {% if user_email %}
+        <li class="welcome">Welcome {{ user_email }}</li>
+        <li><a href="/logout">Log Out</a></li>
+      {% else %}
+        <li><a href="/signup">Sign Up</a></li>
+        <li><a href="/login">Log In</a></li>
+      {% endif %}
+      <li>
+        <a href="#" id="cart-btn" class="cart-link">
+          <img
+            src="{{ url_for('static', filename='cart.png') }}"
+            alt="Cart"
+            class="cart-icon"
+          >
+          <span id="cart-count" class="cart-badge">0</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- HERO & SEARCH CARD -->
   <div class="hero-section">
     <div class="search-card">
-      <h2>Find the Right Place for you on <br><strong>Hermit</strong></h2>
+      <h2>
+        Find the Right Place for you on<br>
+        <strong>Hermit</strong>
+      </h2>
       <p>Discover entire homes and rooms perfect for any trip.</p>
-
       <form id="search-form">
         <input type="text" id="location-search" placeholder="LOCATION" required>
         <div class="date-inputs">
-          <input type="date" id="check-in" placeholder="Check In">
-          <input type="date" id="check-out" placeholder="Check Out">
+          <input type="date" id="check-in">
+          <input type="date" id="check-out">
         </div>
         <div class="guest-inputs">
           <select>
@@ -53,30 +88,36 @@
     </div>
   </div>
 
-  <!-- Results Section -->
-  <div id="results"></div>
+  <!-- RESULTS GRID -->
+  <div id="results" class="grid"></div>
 
-  <div class="features">
+  <!-- FEATURES -->
+  <section class="features">
     <div>
-      <h2>Plans Change</h2>
-      <p>Stay stress-free with flexible cancellation options.</p>
+      <h3>Plans Change</h3>
+      <p>Stay stress-free with flexible cancellation.</p>
     </div>
-
     <div>
-      <h2>Cozy and Inviting</h2>
-      <p>From mountain cabins to beachside retreats -- discover your next stay among millions of others.</p>
+      <h3>Cozy & Inviting</h3>
+      <p>From cabins to beachside retreats.</p>
     </div>
-    
-    <script src="../static/script.js"></script>
-
     <div>
-      <h2>Inviting and Travel-Focused</h2>
-      <p>From cozy studios to spacious homes -- use 100+ filters to find your ideal getaway.</p>
+      <h3>Travel-Focused</h3>
+      <p>100+ filters to find your getaway.</p>
+    </div>
+  </section>
+
+  <!-- CART MODAL -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-cart" class="close">&times;</span>
+      <h2>Your Cart</h2>
+      <ul id="cart-list"></ul>
+      <button id="checkout-btn">Book</button>
     </div>
   </div>
 
-  <!-- point at your static folder -->
-  <script src="../static/script.js"></script>
+  <!-- Main JS (relies on window.appConfig) -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-
 </html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Bookings | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  {% include 'index_nav.html' %}
+
+  <main class="container">
+    <h1>My Bookings</h1>
+    <div id="bookings-list">
+      <p>Loading your bookings…</p>
+    </div>
+  </main>
+
+  <script>
+    window.currentUser = "{{ user_email }}";
+  </script>
+  <script src="{{ url_for('static', filename='my_bookings.js') }}"></script>
+</body>
+</html>

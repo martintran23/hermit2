@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Support | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  {% include 'index_nav.html' %}
+
+  <main class="container">
+    <h1>Support Request</h1>
+    {% if confirmation %}
+      <p class="confirmation">{{ confirmation }}</p>
+      <p><a href="/my-bookings">← Back to My Bookings</a></p>
+    {% else %}
+      <form id="support-form" method="POST">
+        <label>Booking ID</label>
+        <input type="text" name="booking_id" value="{{ booking_id }}" readonly>
+
+        <label>Your Message</label>
+        <textarea name="message" rows="4" required></textarea>
+
+        <button type="submit">Send to Support</button>
+      </form>
+    {% endif %}
+  </main>
+</body>
+</html>

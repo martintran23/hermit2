@@ -1,193 +1,312 @@
-/* ———————————————————————— */
-/* Reset & Base Styles     */
-/* ———————————————————————— */
-body,
-html {
+/* GLOBAL */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+}
+html, body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
 }
 
-h1 {
-  color: #ef3535;
-  margin: 0;
-  padding: 25px 0;
-}
-
-h2 {
-  color: #000;
-  margin: 0;
-  padding: 25px 0;
-}
-
-/* ———————————————————————— */
-/* Navigation & Hero        */
-/* ———————————————————————— */
-.nav-link {
-  text-decoration: none;
-  margin: 0;
-  font-size: 16px;
-  color: #000;
-  transition: color 0.3s ease;
-}
-.nav-link:hover {
-  color: #ff5b5b;
-}
-
-.navigation-container {
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
-  padding: 0 50px;
-  border-bottom: 1px solid #eee;
+  padding: 1rem 2rem;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  z-index: 100;
 }
-
-.navigation {
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.logo {
+  width: 40px;
+}
+.site-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ef3535;
+}
+.navbar-menu {
+  list-style: none;
   display: flex;
   gap: 1.5rem;
-}
-
-.brand {
-  display: flex;
   align-items: center;
 }
-
-.logo {
-  width: 100px;
-  height: auto;
+.navbar-menu li {
+  font-weight: 500;
+}
+.navbar-menu a {
+  text-decoration: none;
+  color: #222;
+}
+.navbar-menu a:hover {
+  color: #ef3535;
+}
+.welcome {
+  color: #555;
+  font-size: 0.9rem;
+}
+#cart-btn {
+  position: relative;
+}
+#cart-count {
+  position: absolute;
+  top: -6px;
+  right: -14px;
+  background: #ef3535;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.75rem;
 }
 
-
+/* HERO */
 .hero-section {
+  margin-top: 80px; /* offset navbar */
+  height: 70vh;
+  background: url('/static/image_2.jpg') center/cover no-repeat;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  height: 100vh;
-  padding-left: 60px;
-  font-family: Arial, sans-serif;
-
-  background-image: url('/static/image_2.jpg');
-  /* comment out until you add the actual image file */
-  /* background-image: url('image-2.jpg'); */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  justify-content: center;
 }
 
-/* ———————————————————————— */
-/* Search Card              */
-/* ———————————————————————— */
+/* SEARCH CARD */
 .search-card {
-  width: 30%;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  margin: auto 0 auto 20px;
+  background: rgba(255,255,255,0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
 }
-.search-card h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
+.search-card h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
 }
 .search-card p {
-  color: #000;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
+  color: #555;
 }
-form input,
-form select {
+.search-card input,
+.search-card select {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
   border: 1px solid #ccc;
-  border-radius: 12px;
-  font-size: 14px;
+  border-radius: 8px;
 }
 .date-inputs,
 .guest-inputs {
   display: flex;
-  gap: 10px;
+  gap: 0.5rem;
 }
-form button {
+.search-card button {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(to right, #ff385c, #e61e4d);
-  color: white;
+  padding: 0.75rem;
+  background: linear-gradient(90deg,#ff385c,#e61e4d);
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-/* ———————————————————————— */
-/* Features Section         */
-/* ———————————————————————— */
-.features {
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  padding: 60px;
-  background-color: #f8f8f8;
-}
-.features div {
-  flex: 1;
-  padding: 20px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  text-align: center;
-}
-
-/* ———————————————————————— */
-/* Listings (Search Results) */
-/* ———————————————————————— */
-#results {
+/* RESULTS GRID */
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  /* allow as many 240px cards per row as fit */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem;
+  padding: 2rem 3rem;
 }
 
+/* LISTING CARD */
 .listing-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 100%;
 }
-
 .listing-card img {
   width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin-bottom: 12px;
+  height: auto;       /* preserve full resolution */
+  object-fit: cover;
 }
-
 .listing-card h3 {
+  margin: 1rem;
   font-size: 1.1rem;
-  margin: 0 0 8px;
-  text-align: center;
 }
-
 .listing-card p {
-  margin: 0 0 12px;
+  margin: 0 1rem 1rem;
+  color: #555;
 }
-
-.book-btn {
-  padding: 10px 16px;
+.cart-btn {
+  margin: 0 1rem 1rem;
+  padding: 0.75rem;
+  background: #ef3535;
+  color: #fff;
   border: none;
   border-radius: 6px;
-  background: linear-gradient(to right, #ff385c, #e61e4d);
-  color: white;
-  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
 }
-
-.book-btn:disabled {
-  opacity: 0.6;
-  cursor: default;
+.cart-btn:hover {
+  background: #d92b48;
 }
+
+/* FEATURES */
+.features {
+  display: flex;
+  gap: 1rem;
+  padding: 2rem;
+  background: #f8f8f8;
+}
+.features > div {
+  flex: 1;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.features h3 {
+  margin-bottom: 0.5rem;
+}
+
+/* CART MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+}
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+#cart-list {
+  list-style: none;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+#cart-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+#checkout-btn {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: linear-gradient(90deg,#ff385c,#e61e4d);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+/* CART MODAL ITEMS */
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.cart-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 1rem;
+}
+.cart-item-details {
+  flex: 1;
+}
+.cart-item-details h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+.cart-item-details .price {
+  margin: 0.25rem 0 0;
+  font-weight: 600;
+}
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #888;
+  cursor: pointer;
+  padding: 0 0.5rem;
+}
+.remove-btn:hover {
+  color: #ef3535;
+}
+.modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+/* disable checkout if empty */
+#checkout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* Cart icon in navbar */
+.cart-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+/* ── My Bookings / Support styles ───────────────────────── */
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.booking-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+.booking-card h3 {
+  margin: 0 0 0.5rem;
+}
+.booking-card button {
+  margin-right: 0.5rem;
+  background: #ff385c;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.confirmation {
+  background: #e0ffe0;
+  border: 1px solid #8f8;
+  padding: 1rem;
+  border-radius: 4px;
+}
+/* ──────────────────────────────────────────────────────── */
