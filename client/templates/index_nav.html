@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- This file should only contain the NAVBAR markup -->
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <img
+        src="{{ url_for('static', filename='image_1.jpg') }}"
+        alt="Hermit Logo"
+        class="logo"
+      >
+      <span class="site-name">Hermit</span>
+    </div>
+    <ul class="navbar-menu">
+      <li><a href="/">Home</a></li>
+      {% if user_email %}
+        <li class="welcome">Welcome {{ user_email }}</li>
+        <li><a href="/host/listings">Host Dashboard</a></li>
+        <li><a href="/my-bookings">My Bookings</a></li>
+        <li><a href="/support">Support</a></li>
+        <li><a href="/logout">Log Out</a></li>
+      {% else %}
+        <li><a href="/signup">Sign Up</a></li>
+        <li><a href="/login">Log In</a></li>
+      {% endif %}
+      <li>
+        <a href="#" id="cart-btn" class="cart-link">
+          <img
+            src="{{ url_for('static', filename='cart.png') }}"
+            alt="Cart"
+            class="cart-icon"
+          >
+          <span id="cart-count" class="cart-badge">0</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</body>
+</html>

@@ -2,19 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Booking Confirmed</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 2rem; }
-    .card { display: inline-block; padding: 2rem; border: 1px solid #ccc; border-radius: 8px; }
-    code { display: block; margin: 1rem 0; font-size: 1.2rem; }
-  </style>
+  <title>Booking Confirmed | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
-  <div class="card">
-    <h1>Booking Confirmed! 🎉</h1>
-    <p>Your booking ID is:</p>
-    <code>{{ booking_id }}</code>
-    <p>Thanks for “paying”—enjoy your stay!</p>
+  {% include 'index_nav.html' %}   <!-- ← shared navbar, uses user_email -->
+
+  <main class="container" style="text-align: center; padding: 2rem 1rem;">
+    <div class="card" style="max-width: 400px; margin: 0 auto; padding: 2rem;">
+      <h1>Booking Confirmed! 🎉</h1>
+      <p>Your booking ID is:</p>
+      <code style="display: block; margin: 1rem 0; font-size: 1.2rem;">{{ booking_id }}</code>
+      <p>Thanks for “paying”—enjoy your stay!</p>
+
+      <div class="action-buttons" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+        <a href="/" class="cart-btn" style="text-decoration: none;">Home</a>
+        <a href="/my-bookings" class="cart-btn" style="text-decoration: none;">My Bookings</a>
+        <a href="/support?booking_id={{ booking_id }}" class="cart-btn" style="text-decoration: none;">Support</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- CART MODAL -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-cart" class="close">&times;</span>
+      <h2>Your Cart</h2>
+      <ul id="cart-list"></ul>
+      <button id="checkout-btn">Book</button>
+    </div>
   </div>
 </body>
 </html>

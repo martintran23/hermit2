@@ -3,27 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <title>Support | Hermit</title>
+
+  <!-- Main CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Core JS (cart + navbar) -->
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
   {% include 'index_nav.html' %}
 
   <main class="container">
-    <h1>Support Request</h1>
-    {% if confirmation %}
-      <p class="confirmation">{{ confirmation }}</p>
-      <p><a href="/my-bookings">← Back to My Bookings</a></p>
+    <h1>
+      <img
+        src="{{ url_for('static', filename='icons/support.svg') }}"
+        alt=""
+        class="page-icon"
+      >
+      Support
+    </h1>
+
+    <!-- Active tickets list -->
+    {% if tickets %}
+      <div class="card" style="margin-bottom:2rem;">
+        <h2>Your Active Tickets</h2>
+        <ul class="tickets-list">
+          {% for t in tickets %}
+            <li class="ticket-item">
+              <div class="ticket-header">
+                <span class="ticket-booking">Booking {{ t.booking_id }}</span>
+                <span class="ticket-time">({{ t.timestamp }})</span>
+              </div>
+              <p class="ticket-message">{{ t.message }}</p>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     {% else %}
-      <form id="support-form" method="POST">
-        <label>Booking ID</label>
-        <input type="text" name="booking_id" value="{{ booking_id }}" readonly>
+      <div class="card" style="margin-bottom:2rem;">
+        <p>You have no active support tickets.</p>
+      </div>
+    {% endif %}
 
-        <label>Your Message</label>
-        <textarea name="message" rows="4" required></textarea>
+    <!-- Confirmation message -->
+    {% if confirmation %}
+      <p class="confirmation" style="margin-bottom:1rem;">{{ confirmation }}</p>
+    {% endif %}
 
-        <button type="submit">Send to Support</button>
-      </form>
+    <!-- Support form -->
+    {% if booking_id %}
+      <div class="card new-ticket-card">
+        <h2>Create a Ticket for Booking {{ booking_id }}</h2>
+        <form id="support-form" method="POST">
+          <label>Booking ID</label>
+          <input type="text" name="booking_id" value="{{ booking_id }}" readonly>
+
+          <label>Your Message</label>
+          <textarea name="message" rows="4" required></textarea>
+
+          <button type="submit" class="action-btn">Send to Support</button>
+        </form>
+      </div>
+    {% else %}
+      <div class="card">
+        <p>Please go to <a href="/my-bookings">My Bookings</a> and click “Need Help?” on a booking.</p>
+      </div>
     {% endif %}
   </main>
+
+  <!-- CART MODAL -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-cart" class="close">&times;</span>
+      <h2>Your Cart</h2>
+      <ul id="cart-list"></ul>
+      <button id="checkout-btn">Book</button>
+    </div>
+  </div>
 </body>
 </html>

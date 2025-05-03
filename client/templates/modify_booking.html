@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Modify Booking | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+  {% include 'index_nav.html' %}
+
+  <main class="container">
+    <h1>
+      <img src="{{ url_for('static', filename='icons/edit.svg') }}" alt="" class="page-icon">
+      Modify Booking
+    </h1>
+
+    {% if confirmation %}
+      <p class="confirmation">{{ confirmation }}</p>
+    {% endif %}
+
+    <div class="card" style="max-width: 500px; margin: 1rem auto 2rem;">
+      <form method="POST" id="modify-form">
+        <div class="form-group">
+          <label>Booking ID</label>
+          <input type="text" name="booking_id" value="{{ booking.booking_id }}" readonly>
+        </div>
+
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" name="start_date" value="{{ booking.start_date }}" required>
+        </div>
+
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" name="end_date" value="{{ booking.end_date }}" required>
+        </div>
+
+        <button type="submit" class="action-btn">Update Dates</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- CART MODAL -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-cart" class="close">&times;</span>
+      <h2>Your Cart</h2>
+      <ul id="cart-list"></ul>
+      <button id="checkout-btn">Book</button>
+    </div>
+  </div>
+</body>
+</html>

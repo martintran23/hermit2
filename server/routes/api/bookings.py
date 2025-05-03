@@ -4,7 +4,7 @@ from datetime import datetime
 
 bookings_bp = Blueprint('bookings', __name__)
 
-# In-memory store for demo purposes
+# In-memory booking store (you can switch to DB later)
 bookings = []
 
 @bookings_bp.route('/api/bookings', methods=['GET'])
@@ -15,16 +15,16 @@ def list_bookings():
 def create_booking():
     if 'email' not in session:
         return jsonify({"error": "Login required"}), 401
-    
+
     data = request.get_json() or {}
-    required = ['property_id', 'user_email', 'start_date', 'end_date']
+    required = ['property_id', 'start_date', 'end_date']  #  user_email no longer required
     if not all(field in data for field in required):
         return jsonify({"error": "Missing booking fields"}), 400
 
     booking = {
         "booking_id": str(uuid.uuid4()),
         "property_id": data['property_id'],
-        "user_email": session['email'],
+        "user_email": session['email'],  # ✅ Use session email only
         "start_date": data['start_date'],
         "end_date": data['end_date'],
         "timestamp": datetime.utcnow().isoformat()

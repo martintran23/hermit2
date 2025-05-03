@@ -8,7 +8,7 @@ user_bookings_bp = Blueprint(
 
 @user_bookings_bp.route('/my-bookings')
 def my_bookings_page():
-    user = session.get('user_email')
+    user = session.get('email')  # ✅ FIXED from 'user_email' to 'email'
     if not user:
-        return redirect(url_for('auth.login_page'))
+        return redirect(url_for('home.login_page'))
     return render_template('my_bookings.html', user_email=user)

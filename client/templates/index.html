@@ -19,8 +19,8 @@
   <!-- Expose API & payment routes to JS -->
   <script>
     window.appConfig = {
-      bookingApi:  "{{ url_for('bookings.create_booking') }}",              // POST here to create booking
-      paymentBase: "{{ url_for('payments.payment_page', booking_id='') }}", // e.g. "/payments/"
+      bookingApi:  "{{ url_for('bookings.create_booking') }}",
+      paymentBase: "{{ url_for('payments.payment_page', booking_id='') }}",
       userEmail:   "{{ user_email or '' }}"
     };
   </script>
@@ -38,8 +38,12 @@
       <span class="site-name">Hermit</span>
     </div>
     <ul class="navbar-menu">
+      <li><a href="/">Home</a></li>
       {% if user_email %}
         <li class="welcome">Welcome {{ user_email }}</li>
+        <li><a href="/host/listings">Host Dashboard</a></li>
+        <li><a href="/my-bookings">My Bookings</a></li>
+        <li><a href="/support">Support</a></li>
         <li><a href="/logout">Log Out</a></li>
       {% else %}
         <li><a href="/signup">Sign Up</a></li>
@@ -62,6 +66,11 @@
   <div class="hero-section">
     <div class="search-card">
       <h2>
+        <img
+          src="{{ url_for('static', filename='icons/home.svg') }}"
+          alt=""
+          class="page-icon"
+        >
         Find the Right Place for you on<br>
         <strong>Hermit</strong>
       </h2>
@@ -117,7 +126,7 @@
     </div>
   </div>
 
-  <!-- Main JS (relies on window.appConfig) -->
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <!-- Main JS (deferred to ensure proper badge rendering) -->
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>
 </html>
