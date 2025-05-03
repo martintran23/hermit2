@@ -2,6 +2,7 @@ import unittest
 #from main import app, bookings
 from server.app import app
 from unittest.mock import patch
+from bson import ObjectId
 import json
 import uuid
 
@@ -11,15 +12,16 @@ class HermitTestCases(unittest.TestCase):
         self.app = app.test_client()
         self.client = app.test_client()
         self.app.testing = True
-
+        # Mock user data for login/signup
         self.user_data = {
             "email": "test@example.com",
             "password": "testpass"
         }
+        # Simulate user signup and login for test setup
         self.app.post('/api/signup', data=json.dumps(self.user_data), content_type='application/json')
         self.app.post('/api/login', data=json.dumps(self.user_data), content_type='application/json')
-
-
+        # Class-level variable to store all support requests across tests, resets each test
+        self.support_requests = []
         # Sample booking data used in multiple tests
         self.booking_data = {
             "property_id": "test123",
@@ -183,6 +185,154 @@ class HermitTestCases(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         data = response.get_json()
         self.assertIn("error", data)
+    
+    def login_session(self, email):
+        """
+        Helper function to simulate a logged-in user by setting the 'email' 
+        in the session. This mimics the login process during tests.
+        """
+        with self.client.session_transaction() as sess:
+            sess['email'] = email
+
+    def test_redirect_if_not_logged_in(self):
+        # Remove the email from the session to simulate a user not logged in
+        # Remove email from session to simulate logout
+        with self.client.session_transaction() as sess:
+            sess.pop('email', None)
+        response = self.client.get('/host/listings')
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/login', response.headers['Location'])
+
+    def test_show_host_listings_if_logged_in(self):
+        # Simulate a logged-in user by setting the email in the session
+        self.login_session('host@example.com')
+        response = self.client.get('/host/listings')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'host@example.com', response.data)
+
+    def test_get_listings_authenticated(self):
+        # Test for authenticated users trying to get listings
+        self.login_session('host@example.com')  # Simulate login
+        response = self.client.get('/api/listings')
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertIsInstance(data, list)
+
+    def test_get_listings_unauthenticated(self):
+        # Test for unauthenticated users trying to get listings
+        response = self.client.get('/api/listings')
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json['error'], 'Login required')
+
+    def test_get_listings_empty(self):
+        # Test for authenticated user with no listings in the database
+        self.login_session('test@example.com')
+        response = self.client.get('/api/listings')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json, [])
+
+    def test_create_listing_missing_fields(self):
+        # Tests reject listing creation with missing fields.
+        self.login_session('host@example.com')
+        data = {
+            "title": "Test",
+            "address": "123 Street"
+            # missing price, description, image_url
+        }
+        response = self.client.post('/api/listings', json=data)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("Missing fields", response.json["error"])
+
+    def test_create_listing_unauthenticated(self):
+        # Tests reject unauthenticated listing creation.
+        data = {
+            "title": "Title",
+            "address": "Addr",
+            "price": 100,
+            "description": "Desc",
+           "image_url": "img.jpg"
+        }
+        response = self.client.post('/api/listings', json=data)
+        self.assertEqual(response.status_code, 401)
+        self.assertIn("Login required", response.json["error"])
+
+    def test_update_listing_unauthenticated(self):
+        # Tests reject unauthenticated PUT /api/listings/<id>.
+        response = self.client.put('/api/listings/123', json={"title": "New"})
+        self.assertEqual(response.status_code, 401)
+        self.assertIn("Login required", response.json["error"])
+
+    def test_update_listing_invalid_id(self):
+        # Tests return 404 for updating non-existent listing.
+        self.login_session('host@example.com')
+        response = self.client.put('/api/listings/000000000000000000000000', json={"title": "Updated"})
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Listing not found", response.json["error"])
+
+    def test_delete_listing_unauthenticated(self):
+        # Tests reject unauthenticated DELETE /api/listings/<id>.
+        response = self.client.delete('/api/listings/123')
+        self.assertEqual(response.status_code, 401)
+        self.assertIn("Login required", response.json["error"])
+
+    def test_delete_listing_invalid_id(self):
+        # Tests if return 404 for deleting non-existent listing.
+        self.login_session('host@example.com')
+        response = self.client.delete('/api/listings/000000000000000000000000')
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Listing not found", response.json["error"])
+
+    def test_modify_booking_invalid_date(self):
+        # Test that invalid date input is handled
+        with self.app.session_transaction() as sess:
+            sess['email'] = 'user@example.com'  # Simulate logged-in user
+        response = self.app.post('/modify-booking?booking_id=1', data={
+            'start_date': 'invalid-date',
+            'end_date': 'invalid-date'
+        })
+        self.assertNotIn('Your booking dates have been updated.', response.data.decode())
+    
+    def test_support_page_unauthenticated(self):
+        # Test that an unauthenticated user is redirected to the login page.
+        response = self.client.get('/support')
+        # Ensure the user is redirected to the login page
+        self.assertEqual(response.status_code, 302)  # Check for redirection status code
+        self.assertEqual(response.location, '/login')  # Check if the redirection location is the login page
+
+    def test_view_previous_tickets(self):
+        # Test that a user sees their previously submitted tickets.
+        self.login_session('testuser@example.com')
+        # Submit a support request
+        self.client.post('/support', data={
+            'booking_id': '12345',
+            'message': 'I need assistance with my booking.'
+        })
+        response = self.client.get('/support')
+        self.assertIn(b'12345', response.data)  # Check if booking_id is present in the response
+        self.assertIn(b'I need assistance with my booking.', response.data)  # Check if message is present
+    
+    def test_my_bookings_page_unauthenticated(self):
+        # Test that an unauthenticated user is redirected to the login page when trying to access /my-bookings.
+        response = self.client.get('/my-bookings')
+        
+        # Assert that the user is redirected to the login page (status code 302 and Location header)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers['Location'], '/login')
+
+    def test_my_bookings_page_authenticated(self):
+        # Test that an authenticated user can access their bookings page.
+        self.login_session('testuser@example.com')
+        response = self.client.get('/my-bookings')
+        # Check if the loading message is present (this indicates the page is attempting to load bookings)
+        self.assertIn(b'Loading your bookings\xe2\x80\xa6', response.data)  # Ensure the correct loading message is displayed
+
+    def test_my_bookings_page_with_no_user(self):
+        # Test that a user is redirected to login page if there is no user in the session.
+        with self.client.session_transaction() as sess:
+            sess['email'] = None
+        response = self.client.get('/my-bookings')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.headers['Location'], '/login')
         
 if __name__ == '__main__':
     unittest.main()
