@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-
+from server.utils.roles import role_required
 listings_api = Blueprint('listings_api', __name__)
 
 # Mongo connection (reuse or create new)
@@ -9,13 +9,9 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['hermit_db']
 host_listings = db['host_listings']
 
-def host_only():
-    if 'email' not in session:
-        return jsonify({"error": "Authentication required"}), 401
-
 @listings_api.route('/api/listings', methods=['GET'])
 def get_listings():
-    # Return only this host's listings
+    # Return only this host's listings (must be logged in)
     host = session.get('email')
     if not host:
         return jsonify({"error": "Login required"}), 401
@@ -27,6 +23,7 @@ def get_listings():
     return jsonify(docs), 200
 
 @listings_api.route('/api/listings', methods=['POST'])
+@role_required('host')
 def create_listing():
     host = session.get('email')
     if not host:
@@ -50,13 +47,13 @@ def create_listing():
     return jsonify(doc), 201
 
 @listings_api.route('/api/listings/<id>', methods=['PUT'])
+@role_required('host')
 def update_listing(id):
     host = session.get('email')
     if not host:
         return jsonify({"error": "Login required"}), 401
 
     data = request.get_json() or {}
-    # only allow update of these fields
     update = {k: data[k] for k in ['title','address','price','description','image_url'] if k in data}
 
     result = host_listings.update_one(
@@ -68,6 +65,7 @@ def update_listing(id):
     return jsonify({"message": "Updated"}), 200
 
 @listings_api.route('/api/listings/<id>', methods=['DELETE'])
+@role_required('host')
 def delete_listing(id):
     host = session.get('email')
     if not host:

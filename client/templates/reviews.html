@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reviews | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='reviews.js') }}" defer></script>
+</head>
+<body>
+  {% include 'index_nav.html' %}
+  <main class="container">
+    <h1>Reviews for Property {{ property_id }}</h1>
+    <div id="reviews-list" class="tickets-list">
+      <p>Loading reviews…</p>
+    </div>
+
+    {% if user_email %}
+      <div class="new-ticket-card">
+        <h2>Leave a Review</h2>
+        <label for="rating">Rating (1–5)</label>
+        <select id="rating">
+          <option value="5">5 – Excellent</option>
+          <option value="4">4 – Very Good</option>
+          <option value="3">3 – Good</option>
+          <option value="2">2 – Fair</option>
+          <option value="1">1 – Poor</option>
+        </select>
+        <label for="comment">Comment</label>
+        <textarea id="comment" rows="3" placeholder="Your thoughts…"></textarea>
+        <button id="submit-review" class="action-btn">Submit</button>
+      </div>
+    {% else %}
+      <p><a href="/login">Log in</a> to leave a review.</p>
+    {% endif %}
+    <p><a href="/">← Back to Home</a></p>
+  </main>
+</body>
+</html>

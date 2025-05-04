@@ -51,9 +51,12 @@ docker run -d \
 4. docker exec hermit-mongo mongosh --eval "db.runCommand({ ping: 1 })"
 5. if terminal responds with { "ok" : 1 } then you are succesfully connected to mongodb://localhost:27017
 
-### 5. Run Flask server
+### 6. Run virtual enviroment
+4. source venv/bin/activate
+
+### 7. Run Flask server
 - python -m server.app
 
-### 6. Run Website
+### 8. Run Website
 - Web Browser: http://localhost:5000/
 - Or open forwarded port link (ex.https://8q42kvkd-5000.usw3.devtunnels.ms/)

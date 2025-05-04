@@ -165,6 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 data-img="${img}"
                 data-price="${price}"
               >Add to Cart</button>
+              <button
+                class="review-btn"
+                data-id="${item.property_id}"
+                style="margin-top:0.5rem;"
+              >Reviews</button>
             </div>
           `;
         }).join('');
@@ -188,6 +193,13 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           saveCart(cartArr);
           updateCartCount();
+        });
+      });
+
+      // 7) wire “Reviews”
+      document.querySelectorAll('.listing-card .review-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          window.location.href = `/reviews/${btn.dataset.id}`;
         });
       });
     });

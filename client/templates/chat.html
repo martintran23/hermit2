@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Room | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='chat.js') }}" defer></script>
+</head>
+<body>
+  {% include 'index_nav.html' %}
+
+  <main class="container">
+    <h1>Chat for Booking {{ booking_id }}</h1>
+    <div id="messages" class="card" style="max-height:60vh; overflow-y:auto; margin-bottom:1rem;">
+      <p>Loading messages…</p>
+    </div>
+    <form id="chat-form" class="form-group">
+      <textarea id="chat-input" rows="2" placeholder="Type your message…" required></textarea>
+      <button type="submit" class="action-btn">Send</button>
+    </form>
+    <p><a href="/my-bookings">← Back to My Bookings</a></p>
+  </main>
+</body>
+</html>

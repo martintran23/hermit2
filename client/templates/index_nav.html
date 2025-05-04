@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- This file should only contain the NAVBAR markup -->
+  <!-- Navbar only file -->
 </head>
 <body>
   <nav class="navbar">
@@ -16,9 +16,15 @@
     </div>
     <ul class="navbar-menu">
       <li><a href="/">Home</a></li>
+
       {% if user_email %}
         <li class="welcome">Welcome {{ user_email }}</li>
-        <li><a href="/host/listings">Host Dashboard</a></li>
+
+        {# only show dashboard if host #}
+        {% if session.role == 'host' %}
+          <li><a href="/host/listings">Host Dashboard</a></li>
+        {% endif %}
+
         <li><a href="/my-bookings">My Bookings</a></li>
         <li><a href="/support">Support</a></li>
         <li><a href="/logout">Log Out</a></li>
@@ -26,6 +32,7 @@
         <li><a href="/signup">Sign Up</a></li>
         <li><a href="/login">Log In</a></li>
       {% endif %}
+
       <li>
         <a href="#" id="cart-btn" class="cart-link">
           <img

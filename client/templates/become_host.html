@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Become a Host | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  {% include 'index_nav.html' %}
+
+  <main class="container">
+    <div class="card" style="max-width:500px; margin:2rem auto; text-align:center;">
+      <h2>Want to become a Host?</h2>
+      <p>Only hosts can add and manage property listings.</p>
+      <a href="/signup" class="action-btn" style="display:inline-block; margin:1rem 0;">
+        Sign Up as Host
+      </a>
+      <p><a href="/">← Back to Home</a></p>
+    </div>
+  </main>
+</body>
+</html>

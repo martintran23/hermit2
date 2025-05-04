@@ -483,3 +483,141 @@ form#support-form button:hover {
   vertical-align: middle;
   margin-right: 0.5rem;
 }
+/* ─── Base Container & Typography ─────────────────────────────────── */
+body {
+  background: #f0f2f5;
+  color: #333;
+  line-height: 1.6;
+}
+.container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin: 2rem auto;
+}
+
+/* ─── Headings ───────────────────────────────────────────────────── */
+h1, h2 {
+  color: #222;
+  margin-bottom: 1rem;
+}
+h1 {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+
+/* ─── Card Wrapper ───────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────── */
+button, .action-btn, .review-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #ff385c, #e61e4d);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  text-decoration: none;
+  text-align: center;
+}
+button:hover, .action-btn:hover, .review-btn:hover {
+  opacity: 0.9;
+}
+
+/* ─── Booking & Listing Cards ───────────────────────────────────── */
+.booking-card, .listing-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease;
+}
+.booking-card:hover, .listing-card:hover {
+  transform: translateY(-4px);
+}
+.booking-card h3, .listing-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+/* ─── Chat & Tickets ────────────────────────────────────────────── */
+#messages, .tickets-list {
+  background: #fafafa;
+  padding: 1rem;
+  border-radius: 6px;
+  max-height: 60vh;
+  overflow-y: auto;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+  margin-bottom: 1rem;
+}
+.ticket-item, .cart-item {
+  background: #fff;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+.ticket-message {
+  margin: 0.25rem 0;
+}
+
+/* ─── Reviews ──────────────────────────────────────────────────── */
+#reviews-list {
+  margin-bottom: 2rem;
+}
+#reviews-list .ticket-item {
+  display: flex;
+  flex-direction: column;
+}
+#reviews-list .ticket-message:first-of-type {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+/* ─── Forms ─────────────────────────────────────────────────────── */
+form#support-form,
+form#chat-form,
+form#new-listing-form,
+.new-ticket-card {
+  margin-top: 1.5rem;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+form input, form select, form textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+  font-family: inherit;
+}
+
+/* ─── Responsive tweaks ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar { padding: 0.75rem 1rem; }
+  .container { margin: 1rem; padding: 1rem; }
+  .search-card { padding: 1rem; }
+  .grid { padding: 1rem; gap: 1rem; }
+}

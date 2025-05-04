@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bookings for My Listings | Hermit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='host_bookings.js') }}" defer></script>
+</head>
+<body>
+  {% include 'index_nav.html' %}
+
+  <main class="container">
+    <h1>Your Property Bookings</h1>
+    <div id="host-bookings-list">
+      <p>Loading bookings…</p>
+    </div>
+  </main>
+</body>
+</html>
