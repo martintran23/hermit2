@@ -1,3 +1,4 @@
+<!-- client/templates/login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,17 +7,19 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="navigation-container">
-    <div class="brand">
-      <img src="{{ url_for('static', filename='image_1.jpg') }}" alt="Hermit logo" class="logo">
-      <h1>Hermit</h1>
+  <!-- Nav bar using consistent styles -->
+  <div class="navbar">
+    <div class="navbar-brand">
+      <img src="{{ url_for('static', filename='image_1.jpg') }}" alt="Hermit logo" class="logo" />
+      <span class="site-name">Hermit</span>
     </div>
-    <nav class="navigation">
-      <a href="/signup" class="nav-link">Sign Up</a>
-      <a href="/" class="nav-link">Home</a>
-    </nav>
+    <ul class="navbar-menu">
+      <li><a href="/signup">Sign Up</a></li>
+      <li><a href="/">Home</a></li>
+    </ul>
   </div>
 
+  <!-- Card wrapper -->
   <div class="search-card" style="max-width: 400px; margin: 50px auto;">
     <h2>Sign In</h2>
     <form id="login-form">

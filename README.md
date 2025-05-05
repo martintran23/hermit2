@@ -52,7 +52,7 @@ docker run -d \
 5. if terminal responds with { "ok" : 1 } then you are succesfully connected to mongodb://localhost:27017
 
 ### 6. Run virtual enviroment
-4. source venv/bin/activate
+- source venv/bin/activate
 
 ### 7. Run Flask server
 - python -m server.app
