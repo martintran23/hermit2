@@ -38,9 +38,13 @@ Inspired by the adaptability of the hermit crab, Hermit provides a reliable plat
 ### Non-functional Requirements
 
 1. Security - secure payment processing.
+
 2. Performance and accuracy - Search result and navigation between the site should be under 3 seconds.
+
 3. Easy UI - User interface should be clean, interactive links should be at least 2 centimeters.
+
 4. Accessibility - Desktop website and phone website should show the same result.
+
 5. Scalability - Accomodate large user traffic.
 
 ### Diagram

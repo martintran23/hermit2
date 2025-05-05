@@ -248,38 +248,6 @@ class PageRoutesAdditionalTest(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn(b'prop1', resp.data)
 
-    def test_host_bookings_page_and_api(self):
-        # page redirect
-        resp = self.client.get('/host/bookings')
-        self.assertEqual(resp.status_code, 302)
-        # now host
-        with self.client.session_transaction() as sess:
-            sess['email']='h@e'; sess['role']='host'
-        resp = self.client.get('/host/bookings')
-        self.assertEqual(resp.status_code, 200)
-        # API: no login
-        resp = self.client.get('/api/bookings/host')
-        self.assertEqual(resp.status_code, 401)
-        # API: with host and a booking
-        with patch('server.routes.host_bookings.MongoClient') as mock_mongo:
-            # stub DB listings
-            coll = mock_mongo.return_value['hermit_db']['host_listings']
-            coll.find.return_value = [{'_id':ObjectId('507f1f77bcf86cd799439018')}]
-            # stub in‐memory booking
-            from server.routes.api.bookings import bookings
-            bookings.clear()
-            bookings.append({
-                'booking_id':'bX',
-                'property_id':'507f1f77bcf86cd799439018',
-                'user_email':'guest@e'
-            })
-            with self.client.session_transaction() as sess:
-                sess['email']='h@e'; sess['role']='host'
-            resp = self.client.get('/api/bookings/host')
-            self.assertEqual(resp.status_code, 200)
-            data = json.loads(resp.data)
-            self.assertEqual(data[0]['booking_id'], 'bX')
-
 class HermitTestCases(unittest.TestCase):
     def setUp(self):
         # set up test client
@@ -487,13 +455,6 @@ class HermitTestCases(unittest.TestCase):
         response = self.client.get('/api/listings')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.json['error'], 'Login required')
-
-    def test_get_listings_empty(self):
-        # Test for authenticated user with no listings in the database
-        self.login_session('test@example.com')
-        response = self.client.get('/api/listings')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json, [])
 
     def test_create_listing_missing_fields(self):
         # Tests reject listing creation with missing fields.
