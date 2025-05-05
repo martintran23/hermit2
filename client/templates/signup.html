@@ -7,16 +7,16 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <!-- Nav bar -->
-  <div class="navigation-container">
-    <div class="brand">
-      <img src="{{ url_for('static', filename='image_1.jpg') }}" alt="Hermit logo" class="logo">
-      <h1>Hermit</h1>
+  <!-- Nav bar using consistent styles -->
+  <div class="navbar">
+    <div class="navbar-brand">
+      <img src="{{ url_for('static', filename='image_1.jpg') }}" alt="Hermit logo" class="logo" />
+      <span class="site-name">Hermit</span>
     </div>
-    <nav class="navigation">
-      <a href="/login" class="nav-link">Sign In</a>
-      <a href="/" class="nav-link">Home</a>
-    </nav>
+    <ul class="navbar-menu">
+      <li><a href="/login">Sign In</a></li>
+      <li><a href="/">Home</a></li>
+    </ul>
   </div>
 
   <!-- Card wrapper -->
@@ -26,7 +26,7 @@
       <input type="email" id="signup-email" placeholder="Email" required />
       <input type="password" id="signup-password" placeholder="Password" required />
 
-      <!-- NEW: role selector -->
+      <!-- Role selector -->
       <label for="signup-role" style="margin-top:1rem; display:block; font-weight:600;">
         Sign up as:
       </label>
